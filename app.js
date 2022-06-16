@@ -1,8 +1,21 @@
-import express from 'express'
-import excedentesRoutes from './routes/excedentes.js'
-import materialRoutes from './routes/material.js'
-
+const express = require('express')
 const app = express()
+const server = require('http').createServer(app)
+const webSocket = require('ws')
+
+const excedentesRoutes = require('./routes/excedentes.js')
+const materialRoutes = require('./routes/material.js')
+
+const wss = new webSocket.Server({ server: server })
+const socketClient = require('./helpers/netSocket')
+
+// RECEPCION Y ENVIO SOCKET-WEBSOCKET
+wss.on('connection', (ws) => {
+  socketClient.on('data', (data) => {    
+    ws.send(JSON.stringify(data))
+    console.log(data)
+  })
+})
 
 // RUTAS
 app.use('/material', materialRoutes)
@@ -14,4 +27,4 @@ app.get('/', (req, res) => {
 })
 
 // ARRANQUE DEL SERVIDOR
-app.listen(5000, () => console.log(`http://localhost:5000`))
+server.listen(5000, () => console.log(`:: http://localhost:5000 ::`))

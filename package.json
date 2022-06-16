@@ -2,17 +2,18 @@
   "name": "node_residuos",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "debug-server": "nodemon app.js"
+    "debug": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.1"
+    "express": "^4.18.1",
+    "net": "^1.0.2",
+    "ws": "^8.8.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
