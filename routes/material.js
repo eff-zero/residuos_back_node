@@ -1,9 +1,13 @@
 const express = require('express')
 const router = express.Router()
+const {
+  getOperarios,
+  getReferencias,
+  getLineas,
+} = require('../controllers/MaterialController')
 
-router.get('/', (req, res) => {
-  // AQUI VAN LAS FUNCIONES JS
-  res.send('HOLA DESDE MATERIAL')
-})
+router.get('/operarios/', getOperarios)
+router.get('/referencias/:linea', getReferencias)
+router.get('/lineas', getLineas)
 
 module.exports = router
