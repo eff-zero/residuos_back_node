@@ -1,20 +1,22 @@
+require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const app = express()
 const server = require('http').createServer(app)
+const socketServer = require('./helpers/netSocket')
+const routerSocket = require('./helpers/routerSocket')
 const webSocket = require('ws')
+const wss = new webSocket.Server({ server })
 
 const excedentesRoutes = require('./routes/excedentes.js')
 const materialRoutes = require('./routes/material.js')
 
-const wss = new webSocket.Server({ server: server })
-const socketClient = require('./helpers/netSocket')
-
-// RECEPCION Y ENVIO SOCKET-WEBSOCKET (1 - CANAL)
-wss.on('connection', (ws) => {
-  socketClient.on('data', (data) => {
-    console.log(data)
-    ws.send(JSON.stringify(data)) // ENVÍO AL CLIENTE REACT
+// RECEPCIÓN Y ENVIO SOCKET-WEBSOCKET (MULTICANAL)
+socketServer.on('connection', (socket) => {
+  console.log(socket.localAddress)
+  wss.on('connection', (ws) => {
+    console.log('CONEXION CON CLIENTE DE REACT')
+    routerSocket(socket, ws)
   })
 })
 
@@ -26,7 +28,7 @@ app.use(express.json())
 app.use('/material', materialRoutes)
 app.use('/excedentes', excedentesRoutes)
 
-// MENSAJE DE INICIO
+// MENSAJE DE INICIO (HTTP GET)
 app.get('/', (req, res) => {
   res.send('SERVIROR DE RESIDUOS: NODE EXPRESS')
 })
