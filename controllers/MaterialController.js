@@ -1,16 +1,24 @@
-const { referencias_material, operarios, lineas } = require('../data/data')
+const materialService = require('../services/materialService')
 
 const getOperarios = (req, res) => {
-  res.send(operarios.operarios)
+  const operarios = materialService.getOperarios()
+  res.send(operarios)
 }
 
 const getReferencias = (req, res) => {
   const linea = req.params.linea
-  res.send(referencias_material[linea])
+  const referencias = materialService.getReferencias(linea)
+  res.send(referencias)
 }
 
 const getLineas = (req, res) => {
+  const lineas = materialService.getLineas()
   res.send(lineas)
 }
 
-module.exports = { getOperarios, getReferencias, getLineas }
+const getEstado = (req, res) => {
+  const estados = materialService.getEstado()
+  res.send(estados)
+}
+
+module.exports = { getOperarios, getReferencias, getLineas, getEstado }

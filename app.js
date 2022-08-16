@@ -24,6 +24,11 @@ socketServer.on('connection', (socket) => {
 app.use(cors())
 app.use(express.json())
 
+// PRUEBAS
+app.post('/pruebas', (req, res) => {
+  res.json(req.body)
+})
+
 // RUTAS
 app.use('/material', materialRoutes)
 app.use('/excedentes', excedentesRoutes)
